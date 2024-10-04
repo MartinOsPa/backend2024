@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 
 const app = express();
 
 //GET para obetener información
-app.get("/", (req, res) => {
+app.get("/usuarios", (req, res) => {
     const usuarios = [
         {
             id: 1,
@@ -19,11 +19,11 @@ app.get("/", (req, res) => {
 
         }
     ];
-    res.status(200).send(usuarios);
+    res.status(200).send("Hola mundo! ");
 
 })
 
 
 app.listen(3000, () => {
-    console.log("Nuevo servidor corriendo en https://localhost:3000")
+    console.log("Servidor corriendo en https://localhost:3000")
 });
