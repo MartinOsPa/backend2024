@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 //GET para obetener información
-app.get("/usuarios", (req, res) => {
+app.get("/usuario", (req, res) => {
     const usuarios = [
         {
             id: 1,
