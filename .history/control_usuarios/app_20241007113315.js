@@ -33,23 +33,15 @@ app.get("/usuarios", (req, res) => {
             email: "danibory@gmail.com",
 
         }
-    ]; */
+    ];
     res.status(200).send({ usuarios });
 
-});
-
-/*app.get("/usuarios/1", (req, res) => {
-    res.status(200).send(usuarios[0]);
 });*/
 
-app.get("/usuarios/:id", (req, res) => {
-    const { id } = req.params;
-    const usuario = usuarios.find((usuario) => usuario.id === +id);
-    //console.log(params)
-    // res.status(200).send(usuarios[0]);
-    res.status(200).send(usuario);
-});
+    app.get("/usuarios/1", (req, res) => {
+        res.status(200).send(usuarios[0]);
+    });
 
-app.listen(3000, () => {
-    console.log("Nuevo servidor corriendo en https://localhost:3000")
-});
+    app.listen(3000, () => {
+        console.log("Nuevo servidor corriendo en https://localhost:3000")
+    });

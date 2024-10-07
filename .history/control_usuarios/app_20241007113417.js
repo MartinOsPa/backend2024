@@ -38,16 +38,8 @@ app.get("/usuarios", (req, res) => {
 
 });
 
-/*app.get("/usuarios/1", (req, res) => {
+app.get("/usuarios/1", (req, res) => {
     res.status(200).send(usuarios[0]);
-});*/
-
-app.get("/usuarios/:id", (req, res) => {
-    const { id } = req.params;
-    const usuario = usuarios.find((usuario) => usuario.id === +id);
-    //console.log(params)
-    // res.status(200).send(usuarios[0]);
-    res.status(200).send(usuario);
 });
 
 app.listen(3000, () => {

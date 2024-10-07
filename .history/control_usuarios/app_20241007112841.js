@@ -1,25 +1,11 @@
 const express = require("express");
 
 const app = express();
-const usuarios = [
-    {
-        id: 1,
-        nombre: "Martin",
-        apellido: "Osorio",
-        email: "mo631254@gmail.com",
-    },
-    {
-        id: 2,
-        nombre: "Daniel",
-        apellido: "Pascual",
-        email: "danibory@gmail.com",
 
-    }
-];
 
 //GET para obetener información
 app.get("/usuarios", (req, res) => {
-    /*const usuarios = [
+    const usuarios = [
         {
             id: 1,
             nombre: "Martin",
@@ -33,21 +19,13 @@ app.get("/usuarios", (req, res) => {
             email: "danibory@gmail.com",
 
         }
-    ]; */
+    ];
     res.status(200).send({ usuarios });
 
-});
+})
 
-/*app.get("/usuarios/1", (req, res) => {
+app.get("/usuarios/1", (req, res) => {
     res.status(200).send(usuarios[0]);
-});*/
-
-app.get("/usuarios/:id", (req, res) => {
-    const { id } = req.params;
-    const usuario = usuarios.find((usuario) => usuario.id === +id);
-    //console.log(params)
-    // res.status(200).send(usuarios[0]);
-    res.status(200).send(usuario);
 });
 
 app.listen(3000, () => {
