@@ -44,7 +44,22 @@ app.get("/usuarios", (req, res) => {
 
 app.get("/usuarios/:id", (req, res) => {
     const { id } = req.params;
+
+    if (isNaN(id)) {
+        res.status(400).send({ error: "El id debe ser numero" });
+        return;
+    };
+
+
+
+
     const usuario = usuarios.find((usuario) => usuario.id === +id);
+
+    if (usuario === undefined) {
+        res.status(404).send({ error: "Usuario con ${id} no existe" });
+        return;
+    };
+    return;
     //console.log(params)
     // res.status(200).send(usuarios[0]);
     res.status(200).send(usuario);
