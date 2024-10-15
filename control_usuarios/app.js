@@ -84,23 +84,21 @@ app.get("/usuarios/:id", (req, res) => {
 /**-*****************************validación de tarea******************************************* */
 
 app.post("/usuarios", (req, res) => {
-    /*validaciones de tarea para el lunes
-    1.-La informacion debe estar completa, si una de ellas no llega enviar un error (400)
-    2.-El email debe ser unico (400) */
+
     const { nombre, apellido, email } = req.body;
     if (!nombre || nombre.trim() === '') {
-        return res.status(400).send({ error: "Nombre es un campo obligatorio" });
+        return res.status(400).send({ error: "Nombre es un campo obligatorio, porfavor rellena el campo" });
     }
     if (!apellido || apellido.trim() === '') {
-        return res.status(400).send({ error: "Apellido es un campo obligatorio" });
+        return res.status(400).send({ error: "Apellido es un campo obligatorio, porfavor rellena el campo " });
     }
     if (!email || email.trim() === '') {
-        return res.status(400).send({ error: "Email es un campo obligatorio" });
+        return res.status(400).send({ error: "Email es un campo obligatorio, porfavor rellena el campo" });
     }
 
     const emailExists = usuarios.some(usuario => usuario.email === email);
     if (emailExists) {
-        return res.status(400).send({ error: "El email ya está en uso" });
+        return res.status(400).send({ error: "El email que ingresaste ya esta en uso" });
     }
 });
 
