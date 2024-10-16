@@ -4,13 +4,23 @@ GET http://localhost:3000/usuarios/5
 
 GET http://localhost:3000/usuarios
 
-###
-POST http://localhost:3000/usuarios/
-Content-Type: application/json
+
+### 
+POST http://localhost:3000/usuarios
+content-type: application/json
 
 {
-    
-    "nombre": "",
-    "apellido": "Osorio",
-    "email": "mo6312454@gmail.com"
+"nombre": "Pablo", 
+"apellido": "Guatemala", 
+"email": "sergiocervantes742@gmail.com"
+}
+
+###
+PUT http://localhost:3000/usuarios/2
+content-type: application/json
+
+{
+"nombre": "Juan", 
+"apellido": "Cervantes", 
+"email": "juancervantes742@gmail.com"  
 }

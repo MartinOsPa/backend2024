@@ -100,7 +100,55 @@ app.post("/usuarios", (req, res) => {
     if (emailExists) {
         return res.status(400).send({ error: "El email que ingresaste ya esta en uso" });
     }
+
+    usuarios.push({ id: usuarios.length + 1, nombre, apellido, email });
+
+
+    res.status(201).send("El usuario se agregó correctamente");
 });
+
+
+
+//Metodo para actualizar 
+//en el put debo de pasarlos los campos que se deben de identificar
+app.put("/usuarios/:id", (req, res) => {
+    const { nombre, apellido, email } = req.body;
+
+    const id = +req.params.id;
+
+    if (!nombre || !apellido || !email) {
+        res.status(404).send({ error: "Todos los campos (nombre, apellido, email) son obligatorios" });
+        return;
+    }
+    if (isNaN(+id)) {
+        res.status(400).send({ error: "El id debe ser número" });
+        return
+    };
+
+    //console.log(typeof +id);
+    //console.log(params);
+
+    const usuario = usuarios.find((usuario) => usuario.id === +id);
+
+    if (usuario === undefined) {
+        res.status(400).send({ error: "El usuario con id ${ id } no existe " });
+        return;
+    };
+
+    usuarios.forEach((usuario) => {
+        if (usuario.id === id) {
+            usuario.nombre = nombre;
+            usuario.apellido = apellido;
+            usuario.email = email;
+        }
+    })
+    res.status(200).send("El usuario se actualizo correctamente");
+});
+
+app.patch("/usuarios/:id", (req, res) => {
+
+});
+
 
 
 
