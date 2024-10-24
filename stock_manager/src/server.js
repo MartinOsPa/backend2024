@@ -1,4 +1,6 @@
 const express = require('express');
+const usersRoutes = require('./routes/users');
+
 
 const app = express();
 
@@ -8,6 +10,16 @@ class Server {
         this.port = 3000;
 
         this.app.use(express.json());
+
+        this.routes();
+    }
+
+    routes() {
+        /*this.app.get('/', (req, res) => {
+            res.send('Hello world!');
+        });*/
+
+        this.app.use('/users', usersRoutes);
     }
 
     start() {
