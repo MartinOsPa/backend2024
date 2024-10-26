@@ -9,9 +9,12 @@ class Server {
         this.app = express();
         this.port = 3000;
 
-        this.app.use(express.json());
-
+        this.middlewares();
         this.routes();
+    }
+
+    middlewares() {
+        this.app.use(express.json());
     }
 
     routes() {
@@ -24,7 +27,7 @@ class Server {
 
     start() {
         this.app.listen(this.port, () => {
-            console.log('Example app listening on port 3000! ' + this.port);
+            console.log('Example app listening on port ' + this.port);
         });
     }
 }
