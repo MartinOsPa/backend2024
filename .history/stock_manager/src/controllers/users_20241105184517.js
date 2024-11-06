@@ -1,5 +1,5 @@
 const { Router, request, response } = require('express');
-const pool= require('../db/connection');
+
 //const users = [
   //  { id: 1, name: 'John Doe' },
    // { id: 2, name: 'Martin Ospa' },

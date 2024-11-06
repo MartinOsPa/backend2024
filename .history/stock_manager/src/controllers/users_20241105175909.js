@@ -1,26 +1,23 @@
 const { Router, request, response } = require('express');
-const pool= require('../db/connection');
+
 //const users = [
   //  { id: 1, name: 'John Doe' },
    // { id: 2, name: 'Martin Ospa' },
    // { id: 3, name: 'BobSmith' },
 //];
 
-const getAll = async (req = request, res = response) =>{
-    let conn;
-    try{
-        conn = await pool.getConnection();
-        const users = await conn.query('SELECT * FROM users');
-
-        res.send(users);
-    }catch(error){
-        res.status(500).send('internal server error');
+const getAll = (req = request, res = response) => {
+    try {
+        conn=await pool.getConnection();
+    } catch (error) {
+        res.status(500).send('Internal server error');
         return;
-    }finally{
-        if (conn) conn.end();
+    }
+    
+    finally{
+
     }
 }
-
 
 const getById = (req = request, res = response) => {
     const { id } = req.params;
