@@ -24,30 +24,18 @@ const getAllUsers = async (req = request, res = response) =>{
 }
 
 
-const getUserById = async(req = request, res = response) => {
+const getUserById = (req = request, res = response) => {
     const { id } = req.params;
-    
 
     if (isNaN(id)) {
         res.status(400).send('Invalid ID');
         return;
     };
 
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        const user = conn.query(usersQueries.getById,[+id]);
-
-        if (!user) {
-            res.status(404).send('user not found');
-            return;
-        }
-
-    }catch(error){
-        res.status(500).send(error);
+    const user = users.find(user => user.id === +id);
+    if (!user) {
+        res.status(404).send('user not found');
         return;
-    }finally{
-        if (conn) conn.end();
     }
 
     res.send(user);
