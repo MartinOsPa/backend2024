@@ -1,4 +1,4 @@
-const { Router, request, response } = require('express');
+const { request, response } = require('express');
 const { usersQueries } = require('../models/users');
 const pool= require('../db/connection');
 
@@ -24,58 +24,118 @@ const getAllUsers = async (req = request, res = response) =>{
 }
 
 
-const getUserById = async(req = request, res = response) => {
-    const { id } = req.params;
-    
+const getUserById=async(req=request, res=response)=>{
+    const {id}=req.params;
 
-    if (isNaN(id)) {
+    if(isNaN(id)){
         res.status(400).send('Invalid ID');
         return;
-    };
+      }
 
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        const user = conn.query(usersQueries.getById,[+id]);
-
-        if (!user) {
-            res.status(404).send('user not found');
-            return;
+      let conn;
+      try{
+        conn=await pool.getConnection();
+        const user=await conn.query(usersQueries.getById, [+id]);
+        if(user.length===0){
+          res.status(404).send('User not found');
+          return;
         }
 
-    }catch(error){
+        res.send(user);
+
+      }catch(error){
         res.status(500).send(error);
-        return;
-    }finally{
-        if (conn) conn.end();
-    }
 
-    res.send(user);
+      }finally{
+        if(conn) conn.end();
+      }
 
+      //const user  = users.find(user => user.id === +id); 
 }
 
 
 // Crear un nuevo usuario
-const createUser = (req = request, res = response) => {
-    const { name } = req.body;
-
-    if (!name) {
-        res.status(400).send('Name is required');
+const createUser = async(req = request, res = response) => {
+    const {username,password,email} = req.body;
+  
+    if (!username || !password || !email) {
+        res.status(400).send('Bad request');
         return;
     }
-    const user = users.find(user => user.name === name);
-
-    if (user) {
+  
+    let conn;
+  
+    try{
+      conn=await pool.getConnection();
+  
+      const user=await conn.query(usersQueries.getByUsername,[username]);
+  
+      if(user.length>0){
         res.status(409).send('User alredy exists');
         return;
+      }
+  
+      const newUser=await conn.query(usersQueries.create, [username,password,email]);
+  
+      if(newUser.affecteRows===0){
+        res.status(500).send('User not be created');
+        return;
+      }
+      //console.log(newUser);
+  
+      res.status(201).send("User Created succesfully")
+  
+    }catch(error){
+      res.status(500).send(error);
+      return;
+  
+    }finally{
+      if(conn) conn.end();
+    }
+  
+    //users.push({id:users.length+1, name});
+    //res.send('User created succesfully');
+  }
+
+
+
+const updateUser = async (req = request, res = response) => {
+    const { id } = req.params;
+    const { username, password, email } = req.body;
+
+    if (isNaN(id) || !username || !password || !email) {
+        res.status(400).send('Invalid request: ID and all fields are required');
+        return;
     }
 
-    users.push({ id: users.length + 1, name });
-    res.send('User created succesfully');
-};
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        
+        // Verificar si el usuario existe
+        const user = await conn.query(usersQueries.getById, [+id]);
+        if (user.length === 0) {
+            res.status(404).send('User not found');
+            return;
+        }
+        
+        // Actualizar usuario
+        const result = await conn.query(usersQueries.update, [username, password, email, +id]);
+        
+        if (result.affectedRows === 0) {
+            res.status(500).send('User could not be updated');
+            return;
+        }
 
+        res.send('User updated successfully');
+    } catch (error) {
+        res.status(500).send(error);
+    } finally {
+        if (conn) conn.end();
+    }
+};
 // Actualizar un usuario
-const updateUser = (req = request, res = response) => {
+/*const updateUser = (req = request, res = response) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -97,7 +157,7 @@ const updateUser = (req = request, res = response) => {
         }
     });
     res.send('user update succerfully');
-}
+}*/
 
 // Eliminar un usuario por ID
 const deleteUser = (req = request, res = response) => {
