@@ -31,5 +31,48 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:3000/users/5/ 
+DELETE http://localhost:3000/users/2 
 //para eliminar
+
+
+
+### Mostrar todos los miembros de staff
+GET http://localhost:3000/staff
+
+### Mostrar un miembro específico de staff por ID
+GET http://localhost:3000/staff/6
+
+### Agregar un nuevo miembro a staff
+POST http://localhost:3000/staff
+Content-Type: application/json
+
+{
+  "first_name": "Martin",
+  "last_name": "Osorio",
+  "birth_date": "2003-03-10",
+  "gender": "M",
+  "phone_number": "2871240136",
+  "email": "mo6312454@gmail.com",
+  "address": "Las flores, Tuxtepec",
+  "is_active": true,
+  "user_id": 5 
+}
+
+### Actualizar un miembro específico de staff
+PUT http://localhost:3000/staff/2
+Content-Type: application/json
+
+{
+  "first_name": "Bruce",
+  "last_name": "Wayne",
+  "birth_date": "1978-05-27",
+  "gender": "M",
+  "phone_number": "0987654321",
+  "email": "bruce@wayneenterprises.com",
+  "address": "New Address, Gotham",
+  "is_active": true,
+  "user_id": 4
+}
+
+### Eliminar un miembro específico de staff por ID
+DELETE http://localhost:3000/staff/2
