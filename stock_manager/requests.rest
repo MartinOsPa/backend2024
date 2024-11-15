@@ -10,12 +10,22 @@ POST http://localhost:3000/users/
 Content-Type: application/json
 
 {
-  "username": "MartinOsPa",
-  "password": "martinospa123",
-  "email": "mo63124564@gmail.com"
+  "username": "almir",
+  "password": "martinodasd",
+  "email": "almir4@gmail.com"
   //para agregar un usuario
 }
 
+###
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "username": "almir",
+  "password": "martinodasd"
+
+  //para agregar un usuario
+}
 
 ###
 PUT http://localhost:3000/users/1
@@ -33,6 +43,20 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/users/2 
 //para eliminar
+
+###
+
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+
+  "us"
+}
+
+
+
+
 
 
 
@@ -76,3 +100,5 @@ Content-Type: application/json
 
 ### Eliminar un miembro específico de staff por ID
 DELETE http://localhost:3000/staff/2
+
+

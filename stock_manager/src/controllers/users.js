@@ -1,4 +1,5 @@
 const { request, response } = require('express');
+const bcrypt = require('bcrypt');
 const { usersQueries } = require('../models/users');
 const pool= require('../db/connection');
 
@@ -7,6 +8,8 @@ const pool= require('../db/connection');
    // { id: 2, name: 'Martin Ospa' },
    // { id: 3, name: 'BobSmith' },
 //];
+
+const saltRounds =10;
 
 const getAllUsers = async (req = request, res = response) =>{
     let conn;
@@ -54,6 +57,37 @@ const getUserById=async(req=request, res=response)=>{
 }
 
 
+const loginUser = async(req = request, res = response) =>{
+    const {username, password} = req.body;
+  
+    if(!username || !password){
+      res.status(400).send('Username and Password are mandatory!');
+      return;
+    }
+  
+    let conn;
+    try{
+      conn = await pool.getConnection();
+  
+      const user = await conn.query(usersQueries.getByUsername,[username]);
+      if(user.length === 0){
+        res.status(400).send('Bad username or password');
+        return;
+      }
+  
+      const passwordMatch = await bcrypt.compare(password, user[0].password);
+      if(!passwordMatch){
+        res.status(403).send('Bad username or password');
+        return;
+      }
+      res.send('Loged in!');
+    }catch(error){
+      res.status(500).send(error);
+    }finally{
+      if(conn) conn.end();
+    }
+  }
+
 // Crear un nuevo usuario
 const createUser = async(req = request, res = response) => {
     const {username,password,email} = req.body;
@@ -75,7 +109,10 @@ const createUser = async(req = request, res = response) => {
         return;
       }
   
-      const newUser=await conn.query(usersQueries.create, [username,password,email]);
+    const hashPassword= await bcrypt.hash(password, saltRounds);
+
+
+    const newUser=await conn.query(usersQueries.create, [username,hashPassword,email]);
   
       if(newUser.affecteRows===0){
         res.status(500).send('User not be created');
@@ -96,6 +133,8 @@ const createUser = async(req = request, res = response) => {
     //users.push({id:users.length+1, name});
     //res.send('User created succesfully');
   }
+
+
 
 
 
@@ -215,7 +254,7 @@ const deleteUser = async (req = request, res = response) => {
     res.send('User deleted');
 };*/
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, loginUser, createUser, updateUser, deleteUser };
 
 /*const getMessage = (req = request, res = response) => {
     res.send('Helllo from the users conrtoller!');
