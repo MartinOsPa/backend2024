@@ -1,6 +1,9 @@
 const express = require('express');
-const usersRoutes = require('./routes/users');
-const staffRoutes = require('./routes/staff');
+const usersRoutes = require('./routes/users');       // Rutas de usuarios
+const staffRoutes = require('./routes/staff');       // Rutas de staff
+const clientsRoutes = require('./routes/clients');   // Rutas de clientes
+const productsRoutes = require('./routes/products'); // Rutas de productos
+const salesRoutes = require('./routes/sales');       // Rutas de ventas
 
 
 
@@ -24,8 +27,11 @@ class Server {
             res.send('Hello world!');
         });*/
 
-        this.app.use('/users', usersRoutes);
-        this.app.use('/staff', staffRoutes);
+        this.app.use('/users', usersRoutes);       // Rutas de usuarios
+        this.app.use('/staff', staffRoutes);       // Rutas de staff
+        this.app.use('/clients', clientsRoutes);   // Rutas de clientes
+        this.app.use('/products', productsRoutes); // Rutas de productos
+        this.app.use('/sales', salesRoutes);       // Rutas de ventas
     }
 
     start() {

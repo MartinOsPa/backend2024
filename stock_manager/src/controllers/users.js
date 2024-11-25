@@ -158,8 +158,28 @@ const updateUser = async (req = request, res = response) => {
             return;
         }
         
+        // Generar los campos actualizados dinámicamente
+    const updatedFields = {
+      username: username || user[0].username,
+      email: email || user[0].email,
+      password: user[0].password, // Mantener la contraseña actual si no se proporciona una nueva
+    };
+
+    // Encriptar la contraseña si se proporciona
+    if (password) {
+      updatedFields.password = await bcrypt.hash(password, saltRounds);
+    }
+
+    // Actualizar el usuario en la base de datos
+    const result = await conn.query(usersQueries.update, [
+      updatedFields.username,
+      updatedFields.password,
+      updatedFields.email,
+      +id,
+    ]);
+
         // Actualizar usuario
-        const result = await conn.query(usersQueries.update, [username, password, email, +id]);
+       // const result = await conn.query(usersQueries.update, [username, password, email, +id]);
         
         if (result.affectedRows === 0) {
             res.status(500).send('User could not be updated');
