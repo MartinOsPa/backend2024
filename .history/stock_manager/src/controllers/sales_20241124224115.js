@@ -1,7 +1,7 @@
 const { request, response } = require('express');
 const pool = require('../db/connection');
 
-//Mostrar todas las ventas agregadas
+// Obtener todas las ventas
 const getAllSales = async (req = request, res = response) => {
     let conn;
     try {
@@ -15,7 +15,7 @@ const getAllSales = async (req = request, res = response) => {
     }
 };
 
-//Mostar una venta por su ID
+// Obtener una venta por su ID
 const getSaleById = async (req = request, res = response) => {
     const { id } = req.params;
     if (isNaN(id)) {
@@ -39,8 +39,7 @@ const getSaleById = async (req = request, res = response) => {
     }
 };
 
-//Agregar una nueva venta y verificar que client_rfc y product_id existen en las tablas correspondientes
-
+// Agregar una nueva venta
 const addSale = async (req = request, res = response) => {
     const { client_rfc, product_id, quantity, sale_date, payment_method, ticket, invoice } = req.body;
 
@@ -53,6 +52,7 @@ const addSale = async (req = request, res = response) => {
     try {
         conn = await pool.getConnection();
 
+        // Verificar que `client_rfc` y `product_id` existen en las tablas correspondientes
         const clientExists = await conn.query('SELECT * FROM clients WHERE rfc = ?', [client_rfc]);
         if (clientExists.length === 0) {
             res.status(400).send('Client RFC does not exist');
@@ -65,7 +65,7 @@ const addSale = async (req = request, res = response) => {
             return;
         }
 
-        // Verificar que el ticket o la factura no se repita
+        // Verificar que el ticket o invoice no se repita
         const ticketExists = await conn.query('SELECT * FROM sales WHERE ticket = ?', [ticket]);
         if (ticketExists.length > 0) {
             res.status(400).send('Ticket already exists');
@@ -78,7 +78,7 @@ const addSale = async (req = request, res = response) => {
             return;
         }
 
-        //Verifica si el producto tiene stock o no
+        // Verificar si hay suficiente stock
         const productStock = await conn.query('SELECT stock FROM products WHERE id = ?', [product_id]);
         if (productStock[0].stock < quantity) {
             res.status(400).send('Insufficient stock');
@@ -88,7 +88,7 @@ const addSale = async (req = request, res = response) => {
         // Insertar la venta
         const result = await conn.query('INSERT INTO sales (client_rfc, product_id, quantity, sale_date, payment_method, ticket, invoice) VALUES (?, ?, ?, ?, ?, ?, ?)', [client_rfc, product_id, quantity, sale_date, payment_method, ticket, invoice]);
 
-        //Descuento
+        // Descontar el stock del producto
         await conn.query('UPDATE products SET stock = stock - ? WHERE id = ?', [quantity, product_id]);
 
         res.status(201).send('Sale created successfully');
@@ -99,7 +99,7 @@ const addSale = async (req = request, res = response) => {
     }
 };
 
-//Actualizar una venta existente y verificar que client_rfc y product_id existen en las tablas correspondientes
+// Actualizar una venta
 const updateSale = async (req = request, res = response) => {
     const { id } = req.params;
     const { client_rfc, product_id, quantity, sale_date, payment_method, ticket, invoice } = req.body;
@@ -113,13 +113,14 @@ const updateSale = async (req = request, res = response) => {
     try {
         conn = await pool.getConnection();
 
-        //Verificar que la venta existe
+        // Verificar que la venta existe
         const saleExists = await conn.query('SELECT * FROM sales WHERE id = ?', [id]);
         if (saleExists.length === 0) {
             res.status(404).send('Sale not found');
             return;
         }
 
+        // Verificar que `client_rfc` y `product_id` existen en las tablas correspondientes
         const clientExists = await conn.query('SELECT * FROM clients WHERE rfc = ?', [client_rfc]);
         if (clientExists.length === 0) {
             res.status(400).send('Client RFC does not exist');
@@ -132,7 +133,7 @@ const updateSale = async (req = request, res = response) => {
             return;
         }
 
-        // Verificar que el ticket o la factura no se repita
+        // Verificar que el ticket o invoice no se repita
         const ticketExists = await conn.query('SELECT * FROM sales WHERE ticket = ? AND id != ?', [ticket, id]);
         if (ticketExists.length > 0) {
             res.status(400).send('Ticket already exists');
@@ -145,10 +146,10 @@ const updateSale = async (req = request, res = response) => {
             return;
         }
 
-        //Actualiza la venta
+        // Actualizar la venta
         const result = await conn.query('UPDATE sales SET client_rfc = ?, product_id = ?, quantity = ?, sale_date = ?, payment_method = ?, ticket = ?, invoice = ? WHERE id = ?', [client_rfc, product_id, quantity, sale_date, payment_method, ticket, invoice, id]);
 
-        //Verifica si hubo cambio en la cantidad del producto
+        // Verificar si hubo cambio en la cantidad y actualizar el stock
         if (result.affectedRows > 0) {
             // Descontar el nuevo stock y devolver el antiguo
             const oldSale = saleExists[0];
@@ -166,7 +167,7 @@ const updateSale = async (req = request, res = response) => {
     }
 };
 
-// Eliminar una venta existente
+// Eliminar una venta
 const deleteSale = async (req = request, res = response) => {
     const { id } = req.params;
     if (isNaN(id)) {
@@ -178,7 +179,7 @@ const deleteSale = async (req = request, res = response) => {
     try {
         conn = await pool.getConnection();
         
-        //Verificar si la venta existe
+        // Verificar si la venta existe
         const saleExists = await conn.query('SELECT * FROM sales WHERE id = ?', [id]);
         if (saleExists.length === 0) {
             res.status(404).send('sale not found');
@@ -187,6 +188,7 @@ const deleteSale = async (req = request, res = response) => {
 
         const sale = saleExists[0];
 
+        // Actualizar el stock del producto
         await conn.query('UPDATE products SET stock = stock + ? WHERE id = ?', [sale.quantity, sale.product_id]);
 
         // Eliminar la venta

@@ -9,19 +9,19 @@ const {
 
 const router = Router();
 
-//Ruta para los clientes activos
+// Ruta para obtener todos los clientes activos
 router.get('/', getAllClients);
 
-//Ruta para el cliente por RFC
+// Ruta para obtener un cliente por RFC
 router.get('/:rfc', getClientByRfc);
 
-//Ruta para agregar un nuevo cliente
+// Ruta para agregar un nuevo cliente
 router.post('/', addClient);
 
-//Ruta para actualizar un cliente 
+// Ruta para actualizar un cliente existente
 router.put('/:rfc', updateClient);
 
-//Ruta para eliminar un cliente
+// Ruta para eliminar (marcar como inactivo) un cliente
 router.delete('/:rfc', deleteClient);
 
 module.exports = router;
