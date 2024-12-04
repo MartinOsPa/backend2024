@@ -8,21 +8,21 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "first_name":" Rosalia",
-  "last_name": "camacho",
-  "email": "rosalia@gmail.com",
-  "password": "rosalia123"
+  "first_name":"Martin",
+  "last_name": "Osorio",
+  "email": "mo6312454@gmail.com",
+  "password": "martinospa123"
 }
 
 ### EDITAR
-PUT http://localhost:3000/users/5
+PUT http://localhost:3000/users/1
 Content-Type: application/json
 
 {
-  "first_name":" Rosalia",
+  "first_name":" Karla",
   "last_name": "Camacho",
   "email": "rosalia@gmail.com"
 }
 
 ###Elimimar usuario
-DELETE http://localhost:3000/users/4
+DELETE http://localhost:3000/users/1
