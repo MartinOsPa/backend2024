@@ -1,5 +1,6 @@
-const Server = require('./server');
 
-const server =new Server();
+const Server=require('./server');
+
+const server=new Server();
 
 server.start();
