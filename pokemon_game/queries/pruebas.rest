@@ -1,17 +1,23 @@
 GET http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaXNfYWRtaW4iOm51bGwsImlhdCI6MTczNDAyMTk4MywiZXhwIjoxNzM0MDIyMjgzfQ.gTfD4C8xBNTdJ3uxfG06L3i6I6xpOns7vvueuzcSn2I
 
 ###Mostar usuario por ID
 GET http://localhost:3000/users/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzM0MDIxMTQ2LCJleHAiOjE3MzQwMjE0NDZ9.lLHl88Npg5J4ZYEN7yYMYGwC5giIJYoAJKz7pg9gREY
+
 
 ### Agregar
 POST http://localhost:3000/users
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaXNfYWRtaW4iOm51bGwsImlhdCI6MTczNDAyMzAxOCwiZXhwIjoxNzM0MDIzMzE4fQ.BXHKViBJOh6hzL8S5FGtuGtGEQ8WWYXvh6tESsGym9Y
 
 {
-  "first_name":"Martin",
-  "last_name": "Osorio",
-  "email": "mo6312454@gmail.com",
-  "password": "martinospa123"
+  "first_name":"Clart",
+  "last_name": "Klen",
+  "email": "batman@baticueva.com",
+  "password": "batman"
 }
 
 ### EDITAR

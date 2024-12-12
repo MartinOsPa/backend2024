@@ -40,6 +40,18 @@ const createUser = async (req = request, res = response) => {
         password
 } = req.body;
 
+const {id, is_admin} = req;
+
+if (!id || !is_admin === undefined){
+    res.status(400).send({message: 'Missing required field'});
+    return;
+}
+
+if (is_admin !== 1){
+    res.status(403).send({message: 'Do you have enough priviliges'});
+    return;
+}
+
 if (!first_name || !last_name || !email || !password){
     res.status(400).send({message: 'missing required field'});//json
     return;

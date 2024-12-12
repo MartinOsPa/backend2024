@@ -2,11 +2,17 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "mo6312454@gmail.com",
-    "password": "martinospa123"
+    "email": "batman@baticueva.com",
+    "password": "batman"
 }
+
+#{
+#    "email": "mo6312454@gmail.com",
+#    "password": "martinospa123"
+#}
+
 
 ###
 GET http://localhost:3000/users/protected
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzOTQxNzg2LCJleHAiOjE3MzM5NDIwODZ9.9HyhKAsaxBp4sRFKjIKnldM6uwCehoYTKm3TCNLF__A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaXNfYWRtaW4iOm51bGwsImlhdCI6MTczNDAyMjU1OCwiZXhwIjoxNzM0MDIyODU4fQ.kFXA7wv_1dzs7IQLd8O4kHcv_R3EiIuHujBU1JpWp5c
